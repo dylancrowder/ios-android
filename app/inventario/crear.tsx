@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { StockFormData, schema } from "../../schema/zod";
-import RequiredForm from "@/components/create_stock/Required";
 
 import { View, ScrollView } from "react-native";
 import { Button, Text } from "react-native-paper";
 import OptionalForm from "@/components/create_stock/optional/Optional";
+import { Required } from "@/components/create_stock/required/Required";
 
 const CreateStock = () => {
   const [stockType, setStockType] = useState("");
@@ -21,6 +21,8 @@ const CreateStock = () => {
   });
 
   const onSubmit = (data: any) => {
+    console.log("este es el a");
+    
     console.log("Datos recibidos del formulario:", data);
 
     let stockData;
@@ -69,7 +71,7 @@ const CreateStock = () => {
     if (data.manufactureDate)
       formData.append("manufactureDate", data.manufactureDate);
 
-    fetch("http://localhost:8086/create", {
+    /*     fetch("http://localhost:8086/create", {
       method: "POST",
       body: formData,
     })
@@ -79,24 +81,22 @@ const CreateStock = () => {
       })
       .catch((error) => {
         console.error("Error al enviar los datos:", error);
-      });
+      }); */
+
+    console.log("esto es lo que se enviaria ", formData);
   };
 
   return (
     <ScrollView>
       <View>
         <Text variant="headlineLarge">Formulario registro de stock</Text>
-        <RequiredForm
-          control={control}
-          handleSubmit={handleSubmit}
-          onSubmit={onSubmit}
-        />
+        <Required control={control} />
 
         <Text variant="headlineLarge">Campos opcionales</Text>
         <OptionalForm />
 
         <Button mode="contained" onPress={handleSubmit(onSubmit)}>
-          Enviar
+          Enviarr
         </Button>
       </View>
     </ScrollView>

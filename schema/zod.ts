@@ -5,23 +5,12 @@ export const schema = z.object({
   name: z.string().min(1, "El nombre es obligatorio"),
   salePrice: z.coerce.number().positive("El precio de venta debe ser positivo"),
   category: z.string().min(1, "La categoría es obligatoria"),
-  stock: z.object({
-    unitType: z.string().min(1, "Elige un tipo de unidad"),
-    unitQuantity: z.coerce.number().positive("La cantidad debe ser positiva"),
-    packDetails: z
-      .object({
-        packQuantity: z.coerce
-          .number()
-          .positive("La cantidad de packs debe ser positiva"),
-        unitsPerPack: z.coerce
-          .number()
-          .positive("Las unidades por pack deben ser positivas"),
-      })
-      .optional(),
-  }),
+  stock: z.object({}).optional(),
+
   availability: z.boolean(),
 
-  // Modificar el tipo de 'image' para que acepte una URI en string
+  // Campos opcionales
+  barcode: z.string().optional(),
   image: z.string().optional(),
 
   expirationDate: z.string().optional(),
@@ -48,13 +37,13 @@ export const schema = z.object({
   stockAlert: z.coerce.number().optional(),
   capacity: z.string().optional(),
   purchasePrice: z.coerce.number().optional(),
-  description: z.string().optional(),
+  description: z.string().optional(), // Campo de descripción
   discount: z.coerce
     .number()
     .min(0, "El descuento no puede ser negativo")
     .max(100, "El descuento no puede ser mayor a 100")
-    .optional(),
-  manufactureDate: z.string().optional(),
+    .optional(), // Descuento en porcentaje
+  manufactureDate: z.string().optional(), // Fecha de fabricación
 });
 
 export type StockFormData = z.infer<typeof schema>;

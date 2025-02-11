@@ -1,7 +1,10 @@
-import React from 'react'
+import React from "react";
+import { Text } from "react-native";
 
 export const Supplier = () => {
   return (
-    <div>Supplier</div>
-  )
-}
+    <>
+      <Text>supplier</Text>
+    </>
+  );
+};

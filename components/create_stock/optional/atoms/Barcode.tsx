@@ -1,5 +1,10 @@
 import React from "react";
+import { Text } from "react-native";
 
 export const Barcode = () => {
-  return <div>Barcode</div>;
+  return (
+    <>
+      <Text>hola</Text>
+    </>
+  );
 };

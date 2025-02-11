@@ -5,29 +5,26 @@ import { StockFormData, schema } from "../../schema/zod";
 
 import { View, ScrollView } from "react-native";
 import { Button, Text } from "react-native-paper";
-import OptionalForm from "@/components/create_stock/optional/Optional";
+
 import { Required } from "@/components/create_stock/required/Required";
+import OptionalForm from "@/components/create_stock/optional/Optional";
 
 const CreateStock = () => {
-  const [stockType, setStockType] = useState("");
-
   const {
     control,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
-  } = useForm({
-    resolver: zodResolver(schema),
-  });
+  } = useForm();
 
   const onSubmit = (data: any) => {
-    console.log("este es el a");
-    
     console.log("Datos recibidos del formulario:", data);
 
     let stockData;
 
-    if (stockType === "packs") {
+    // Crear stockData dependiendo del tipo de stock (packs o unidades)
+    if (data.stock.unitType === "packs") {
       stockData = {
         unitType: data.stock.unitType,
         packDetails: {
@@ -42,18 +39,21 @@ const CreateStock = () => {
       };
     }
 
+    // Crear FormData para enviar los datos
     const formData = new FormData();
     formData.append("uniqueCode", data.uniqueCode);
     formData.append("name", data.name);
     formData.append("salePrice", data.salePrice.toString());
     formData.append("category", data.category);
     formData.append("availability", data.availability.toString());
-    formData.append("stock", JSON.stringify(stockData));
+    formData.append("stock", JSON.stringify(stockData)); // Convertir stockData a string antes de enviarlo
 
+    // Si hay imagen seleccionada, agregarla a FormData
     if (data.image && data.image.length > 0) {
-      formData.append("image", data.image[0]);
+      formData.append("image", data.image[0]); // Solo se envía la primera imagen
     }
 
+    // Agregar campos opcionales al FormData si están presentes
     if (data.barcode) formData.append("barcode", data.barcode);
     if (data.expirationDate)
       formData.append("expirationDate", data.expirationDate);
@@ -71,9 +71,16 @@ const CreateStock = () => {
     if (data.manufactureDate)
       formData.append("manufactureDate", data.manufactureDate);
 
-    /*     fetch("http://localhost:8086/create", {
+    // Verificar el contenido de FormData antes de enviarlo
+    console.log("Contenido de FormData antes de enviar:");
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value); // Esto debería imprimir cada clave y valor
+    }
+
+    // Enviar los datos al servidor
+    fetch("http://10.0.2.2:8086/create", {
       method: "POST",
-      body: formData,
+      body: formData, // Enviamos FormData
     })
       .then((response) => response.json())
       .then((result) => {
@@ -81,22 +88,31 @@ const CreateStock = () => {
       })
       .catch((error) => {
         console.error("Error al enviar los datos:", error);
-      }); */
-
-    console.log("esto es lo que se enviaria ", formData);
+      });
   };
 
   return (
     <ScrollView>
       <View>
         <Text variant="headlineLarge">Formulario registro de stock</Text>
-        <Required control={control} />
+        <Required
+          control={control}
+          errors={errors}
+          setValue={setValue}
+          watch={watch}
+        />
 
         <Text variant="headlineLarge">Campos opcionales</Text>
-        <OptionalForm />
+        <OptionalForm errors={errors} control={control} setValue={setValue} />
 
-        <Button mode="contained" onPress={handleSubmit(onSubmit)}>
-          Enviarr
+        <Button
+          mode="contained"
+          onPress={() => {
+            console.log("Errores actuales:", errors);
+            handleSubmit(onSubmit)();
+          }}
+        >
+          Enviar
         </Button>
       </View>
     </ScrollView>

@@ -7,10 +7,18 @@ import StockType from "./atoms/StockType";
 // Tipado de las props del componente
 type RequiredFormProps = {
   control: any;
+  errors: any;
+  setValue: any;
+  watch: any;
 };
 
 // Componente con tipado aplicado
-export const Required: React.FC<RequiredFormProps> = ({ control }) => {
+export const Required: React.FC<RequiredFormProps> = ({
+  control,
+  errors,
+  setValue,
+  watch,
+}) => {
   return (
     <View style={{ padding: 20 }}>
       <Text>Nombre:</Text>
@@ -18,17 +26,22 @@ export const Required: React.FC<RequiredFormProps> = ({ control }) => {
         control={control}
         name="name"
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={{
-              borderWidth: 1,
-              borderColor: "gray",
-              padding: 10,
-              marginBottom: 5,
-            }}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-          />
+          <>
+            <TextInput
+              style={{
+                borderWidth: 1,
+                borderColor: "gray",
+                padding: 10,
+                marginBottom: 5,
+              }}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+            />
+            {errors.name && (
+              <Text style={{ color: "red" }}>{errors.name.message}</Text>
+            )}
+          </>
         )}
       />
 
@@ -37,17 +50,22 @@ export const Required: React.FC<RequiredFormProps> = ({ control }) => {
         control={control}
         name="uniqueCode"
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={{
-              borderWidth: 1,
-              borderColor: "gray",
-              padding: 10,
-              marginBottom: 5,
-            }}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-          />
+          <>
+            <TextInput
+              style={{
+                borderWidth: 1,
+                borderColor: "gray",
+                padding: 10,
+                marginBottom: 5,
+              }}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+            />
+            {errors.uniqueCode && (
+              <Text style={{ color: "red" }}>{errors.uniqueCode.message}</Text>
+            )}
+          </>
         )}
       />
 
@@ -56,18 +74,23 @@ export const Required: React.FC<RequiredFormProps> = ({ control }) => {
         control={control}
         name="salePrice"
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={{
-              borderWidth: 1,
-              borderColor: "gray",
-              padding: 10,
-              marginBottom: 5,
-            }}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            keyboardType="numeric"
-          />
+          <>
+            <TextInput
+              style={{
+                borderWidth: 1,
+                borderColor: "gray",
+                padding: 10,
+                marginBottom: 5,
+              }}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              keyboardType="numeric"
+            />
+            {errors.salePrice && (
+              <Text style={{ color: "red" }}>{errors.salePrice.message}</Text>
+            )}
+          </>
         )}
       />
 
@@ -76,21 +99,31 @@ export const Required: React.FC<RequiredFormProps> = ({ control }) => {
         control={control}
         name="category"
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={{
-              borderWidth: 1,
-              borderColor: "gray",
-              padding: 10,
-              marginBottom: 5,
-            }}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-          />
+          <>
+            <TextInput
+              style={{
+                borderWidth: 1,
+                borderColor: "gray",
+                padding: 10,
+                marginBottom: 5,
+              }}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+            />
+            {errors.category && (
+              <Text style={{ color: "red" }}>{errors.category.message}</Text>
+            )}
+          </>
         )}
       />
 
-      <StockType control={control} />
+      <StockType
+        control={control}
+        errors={errors}
+        setValue={setValue}
+
+      />
 
       <Text>Disponibilidad:</Text>
       <Controller
